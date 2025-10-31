@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Consent & Action Tracker",
+  "version": "1.0",
+  "description": "Tracks and categorizes outgoing requests based on consent, action, and pageview logic.",
+  "permissions": ["webRequest", "webRequestBlocking",  "<all_urls>","storage", "tabs", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+"action": {
+  "default_title": "Afficher les requêtes",
+  "default_icon": {
+    "16": "icon.jpg"
+  },
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["content.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+
+}
+
+}
