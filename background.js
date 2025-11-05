@@ -64,7 +64,7 @@ if ((params.has('pmcat'))) {
         type = "action";
       } else if (url.href.includes("/col")&(url.href.includes("euidlls"))) {
         type = "pageview";
-      } else if (url.href.includes("/ev")&(url.href.includes("euidlls"))) {
+      } else if (url.href.includes("/ev")&params.has('euidlls')) {
         type = "event";
       }
 
