@@ -148,6 +148,7 @@ document.getElementById("move-right").addEventListener("click", () => {
               if (key.startsWith("eisd")) return;
               if (key.startsWith("actp") && key.includes("v")) return;
               if (key === "actl0") return `action_label = ${decodeURIComponent(value)}`;
+              if (key.startsWith("type") && value.includes("ev")) { return;};
               if (key === "pglbl") return `page_label = ${decodeURIComponent(value)}`;
               if (key === "pggrp") return `page_group = ${decodeURIComponent(value)}`;
               if (key === "actn0") return `action_name = ${decodeURIComponent(value)}`;

@@ -40,18 +40,11 @@ chrome.webRequest.onBeforeRequest.addListener(
       const params = new URLSearchParams(url.search);
       let type = null;
       let consentType = null;
-      
-
     console.log("Méthode :", details.method);
     console.log("Méthode :", details.type);
     console.log("requestBody :", details.requestBody);
-
-
     console.log("Service worker actif");
       if ((url.href.includes("misc"))) {
-
-        
-        
           if (params.has('gdpr_consent')) { 
             type = "consentement_TCFV2";    
             const gdpr = params.get('gdpr_consent');
@@ -71,6 +64,8 @@ if ((params.has('pmcat'))) {
         type = "action";
       } else if (url.href.includes("/col")&(url.href.includes("euidlls"))) {
         type = "pageview";
+      } else if (url.href.includes("/ev")&(url.href.includes("euidlls"))) {
+        type = "event";
       }
 
       if (type) {
