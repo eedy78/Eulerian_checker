@@ -49,22 +49,24 @@ chrome.webRequest.onBeforeRequest.addListener(
 
     console.log("Service worker actif");
       if ((url.href.includes("misc"))) {
-        type = "consent_TAC";
-        if (details.requestBody && details.requestBody.raw && details.requestBody.raw.length > 0) {
-          consentType = "accept";
-          const decoder = new TextDecoder("utf-8");
-          const bodyText = decoder.decode(details.requestBody.raw[0].bytes);
-          const params_consent = new URLSearchParams(bodyText);
-          if (params_consent.has('gdpr_consent')) {     
-            consentType = "accept";
-            const gdpr = params_consent.get('gdpr_consent');
+
+        
+        
+          if (params.has('gdpr_consent')) { 
+            type = "consentement_TCFV2";    
+            const gdpr = params.get('gdpr_consent');
             if (gdpr === "CPjTJ1aPjTJ1aOhAAAENCZCgAAAAAAAAAAAADOwAQDOgAAAA.YAAAAAAAAAA") {
-              consentType = "accept";
+              consentType = "accepter";
         } else if (gdpr === "CPjTJ1aPjTJ1aOhAAAENCZCgAAAAAAAAAAAAAAAAAAAA.YAAAAAAAAAA") {
-          consentType = "refuse";
-        } else {
-          consentType = "other";
-        }}}
+          consentType = "refuser";
+        }
+        }
+if ((params.has('pmcat'))) {
+  type = "consentement_par_catégorie";   
+  const pmcat = params.get('pmcat');
+  consentType = "Catégories acceptées : "+pmcat;
+}
+      
       } else if (url.href.includes("action")&params.has('euidlls')) {
         type = "action";
       } else if (url.href.includes("/col")&(url.href.includes("euidlls"))) {
