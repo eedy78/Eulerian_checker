@@ -1,4 +1,20 @@
 
+let logsCache = [];
+function addLog(log) {
+  logsCache.push(log);
+}
+
+// Flush périodique vers chrome.storage.local
+setInterval(() => {
+  if (logsCache.length > 0) {
+    chrome.storage.local.get({ logs: [] }, (result) => {
+      const merged = [...result.logs, ...logsCache];
+      chrome.storage.local.set({ logs: merged });
+      logsCache = [];
+    });
+  }
+}, 1000);
+
 chrome.action.onClicked.addListener((tab) => {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
@@ -60,27 +76,33 @@ if ((params.has('pmcat'))) {
   consentType = "Catégories acceptées : "+pmcat;
 }
       
-      } else if (url.href.includes("action")&params.has('euidlls')) {
+      }
+      
+if (url.pathname.startsWith("/ev") || params.get('type') === 'ev') {
+  console.log("victory");
+  type = "event";}
+
+      if (url.href.includes("action") && params.has('euidlls')) {
         type = "action";
-      } else if (url.href.includes("/col")&(url.href.includes("euidlls"))) {
+        
+      
+      }if (url.href.includes("/col") && (url.href.includes("euidlls"))) {
         type = "pageview";
-      } else if (url.href.includes("/ev")&params.has('euidlls')) {
+      } if (url.href.includes("/ev")) {
+        console.log("victory");
         type = "event";
       }
-
+   console.log(url.href);
+   console.log("tru"+url.href.includes("/ev"));
       if (type) {
-        
-        chrome.storage.local.get({ logs: [] }, function(result) {
-          const logs = result.logs;
-          
-          logs.push({
-            url: url.href,
-            type,
-            consentType,
-            time: new Date().toISOString()
-          });
-          chrome.storage.local.set({ logs });
+ 
+        addLog({
+          url: url.href,
+          type,
+          consentType,
+          time: new Date().toISOString()
         });
+
       }
     } catch (e) {
       console.error("Error processing request:", e);
